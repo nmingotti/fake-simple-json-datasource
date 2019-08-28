@@ -51,15 +51,27 @@ for (var i = 0;i < annotations.length; i++) {
   decreaser += 1000000
 }
 
-var table =
-  {
-    columns: [{text: 'Time', type: 'time'}, {text: 'Country', type: 'string'}, {text: 'Number', type: 'number'}],
-    values: [
-      [ 1234567, 'SE', 123 ],
-      [ 1234567, 'DE', 231 ],
-      [ 1234567, 'US', 321 ],
-    ]
-  };
+
+// new definition according to what is see in this page. 
+// https://github.com/simPod/grafana-json-datasource
+// 
+var table = {
+  "columns":[
+    {"text":"Time","type":"time"},
+    {"text":"Country","type":"string"},
+    {"text":"Number","type":"number"}
+  ],
+  "rows":[
+    [1234567,"SE",123],
+    [1234567,"DE",231],
+    [1234567,"US",321],
+    [120,"IT",123123123],
+
+  ],
+  "type":"table"
+}
+
+
   
 function setCORSHeaders(res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -70,8 +82,10 @@ function setCORSHeaders(res) {
 
 var now = Date.now();
 var decreaser = 0;
-for (var i = 0;i < table.values.length; i++) {
-  var anon = table.values[i];
+
+for (var i = 0;i < table.rows.length; i++) {
+  var anon = table.rows[i];
+
 
   anon[0] = (now - decreaser);
   decreaser += 1000000
